@@ -1,0 +1,195 @@
+:root{
+  --primary: #fff;
+  --bg-color: rgb(5, 53, 61);
+  --bg-envelope-color: #f5edd1;
+  --envelope-tab: #ecdeb8;
+  --envelope-cover: #e6cfa7;
+  --shadow-color: rgba(0, 0, 0, 0.2);
+  --txt-color: #444;
+  --heart-color: rgb(252, 8, 231);
+}
+body{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: var(--bg-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Usa min-height para garantir que o body cubra toda a tela */
+}
+.container {
+  /* Não precisa de height: 100vh; se o body já tiver min-height */
+  display: grid;
+  place-items: center;
+}
+.container > .envelope-wrapper {
+  background: var(--bg-envelope-color);
+  box-shadow: 0 0 40px var(--shadow-color);
+  position: relative; /* Adicionado para que os corações 'absolute' fiquem contidos */
+}
+.envelope-wrapper > .envelope {
+  position: relative;
+  width: 300px;
+  height: 230px;
+}
+.envelope-wrapper > .envelope::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  border-top: 130px solid var(--envelope-tab);
+  border-right: 150px solid transparent;
+  border-left: 150px solid transparent;
+  transform-origin: top;
+  transition: all 0.5s ease-in-out 0.7s;
+}
+.envelope-wrapper > .envelope::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  width: 0px;
+  height: 0px;
+  border-top: 130px solid transparent;
+  border-right: 150px solid var(--envelope-cover);
+  border-bottom: 100px solid var(--envelope-cover);
+  border-left: 150px solid var(--envelope-cover);
+}
+.envelope > .letter {
+  position: absolute;
+  right: 20%;
+  bottom: 0;
+  width: 54%;
+  height: 80%;
+  background: var(--primary);
+  text-align: center;
+  transition: all 1s ease-in-out;
+  box-shadow: 0 0 5px var(--shadow-color);
+  padding: 20px 10px;
+}
+
+.envelope > .letter > .text {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  color: var(--txt-color);
+  text-align: left;
+  font-size: 10px;
+}
+
+/* ------------------------------------ */
+/* ESTILOS DO CORAÇÃO PRINCIPAL E FRU FRU */
+/* ------------------------------------ */
+
+.heart {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 15px;
+  height: 15px;
+  background: var(--heart-color);
+  z-index: 4;
+  transform: translate(-50%, -20%) rotate(45deg);
+  transition: transform 0.5s ease-in-out 1s;
+  /* Aumentando o brilho do coração principal */
+  box-shadow: 0 0 10px 2px var(--heart-color), 0 1px 6px var(--shadow-color); 
+  cursor: pointer;
+}
+.heart:before, 
+.heart:after {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background-color: var(--heart-color);
+  border-radius: 50%;
+}
+.heart:before {
+  top: -7.5px;
+}
+.heart:after {
+  right: 7.5px;
+}
+
+/* Base para os novos corações "Fru Fru" */
+.heart-2, .heart-3, .heart-4 {
+    position: absolute;
+    background: var(--heart-color);
+    z-index: 4;
+    transform: rotate(45deg);
+    box-shadow: 0 0 8px var(--heart-color); /* Brilho sutil */
+    animation: floatHeart 4s infinite ease-in-out; /* Animação de flutuação */
+}
+.heart-2::before, .heart-2::after,
+.heart-3::before, .heart-3::after,
+.heart-4::before, .heart-4::after {
+    content: "";
+    position: absolute;
+    background-color: var(--heart-color);
+    border-radius: 50%;
+}
+
+/* Coração Fru Fru 1 (Menor) */
+.heart-2 {
+    width: 10px; height: 10px;
+    top: 60px; left: 40px;
+    animation-delay: 0.5s;
+}
+.heart-2::before, .heart-2::after { width: 10px; height: 10px; }
+.heart-2::before { top: -5px; }
+.heart-2::after { right: 5px; }
+
+/* Coração Fru Fru 2 (Médio, no topo) */
+.heart-3 {
+    width: 12px; height: 12px;
+    top: 10px; right: 20px;
+    animation-delay: 1.5s;
+}
+.heart-3::before, .heart-3::after { width: 12px; height: 12px; }
+.heart-3::before { top: -6px; }
+.heart-3::after { right: 6px; }
+
+/* Coração Fru Fru 3 (Maior, embaixo) */
+.heart-4 {
+    width: 14px; height: 14px;
+    bottom: 50px; left: 10px;
+    transform: rotate(60deg); /* Rotação diferente para variedade */
+    animation-delay: 2.5s;
+}
+.heart-4::before, .heart-4::after { width: 14px; height: 14px; }
+.heart-4::before { top: -7px; }
+.heart-4::after { right: 7px; }
+
+
+/* ANIMAÇÃO DE FLUTUAÇÃO */
+@keyframes floatHeart {
+    0% { transform: translateY(0) rotate(45deg); opacity: 0.8; }
+    50% { transform: translateY(-8px) rotate(50deg); opacity: 1; }
+    100% { transform: translateY(0) rotate(45deg); opacity: 0.8; }
+}
+
+/* ------------------------------------ */
+/* REGRAS PARA QUANDO O ENVELOPE ESTÁ ABERTO (.flap) */
+/* ------------------------------------ */
+
+.flap > .envelope:before {
+  transform: rotateX(180deg);
+  z-index: 0;
+}
+.flap > .envelope > .letter {
+  bottom: 100px;
+  transform: scale(1.5);
+  transition-delay: 1s;
+}
+.flap > .heart {
+  transform: rotate(90deg) scale(0); /* Gira e some */
+  transition-delay: 0.4s;
+}
+
+/* Faz os corações "fru fru" sumirem de forma sincronizada */
+.flap > .heart-2,
+.flap > .heart-3,
+.flap > .heart-4 {
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.3s ease-in-out;
+    transition-delay: 0.2s;
+}
